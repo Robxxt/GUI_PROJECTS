@@ -4,6 +4,9 @@ import threading
 from tkinter import *
 from tkinter.scrolledtext import ScrolledText
 
+def list_users_request(client_socket):
+    client_socket.sendall("!users".encode())
+
 def receive_message(client_socket, text_widget):
     while True:
         try:
@@ -52,6 +55,10 @@ def client_program():
 
         button_widget = Button(frame_widget, text="Send", command=lambda : send_message(client_socket, username, text_widget, entry_widget))
         button_widget.pack(side=RIGHT)
+        
+
+        users_widget = Button(window, text="List users", command=lambda : list_users_request(client_socket))
+        users_widget.pack(padx=5, pady=5)
 
         thread = threading.Thread(target=receive_message, args=(client_socket, text_widget))
         thread.daemon = True

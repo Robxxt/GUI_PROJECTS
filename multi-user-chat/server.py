@@ -14,15 +14,21 @@ def client_thread(client_socket, clients, usernames):
 
     while True:
         try:
-            message = client_socket.recv(1024)
+            message = client_socket.recv(1024).decode()
+            if message == "!users":
+                client_socket.sendall(f"\n[+] All users: {', '.join(usernames.values())}\n\n".encode())
+                continue
             if not message:
                 break
             for client in clients:
                 if client is not client_socket:
-                    client.sendall(message)
+                    client.sendall(message.encode())
         except:
             break
-    
+    for client in clients:
+        if client is not client_socket:
+            client.sendall(f"[-] User {username} has left\n".encode())
+    usernames.pop(client_socket)
 
 def server_program():
     host = "localhost"
