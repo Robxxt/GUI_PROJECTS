@@ -44,7 +44,7 @@ def client_program():
         text_widget.pack(padx=10, pady=10)
 
         entry_widget = Entry(window)
-        entry_widget.bind("<Return>", lambda _: send_message(event, client_socket, username, text_widget, entry_widget))
+        entry_widget.bind("<Return>", lambda _: send_message(client_socket, username, text_widget, entry_widget))
         entry_widget.pack(pady=5, padx=5, fill=BOTH)
         thread = threading.Thread(target=receive_message, args=(client_socket, text_widget))
         thread.daemon = True

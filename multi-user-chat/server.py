@@ -12,6 +12,16 @@ def client_thread(client_socket, clients, usernames):
         if client is not client_socket:
             client.sendall(f"\n[+] User {username} has joined the chat\n\n".encode())
 
+    while True:
+        try:
+            message = client_socket.recv(1024)
+            if not message:
+                break
+            for client in clients:
+                if client is not client_socket:
+                    client.sendall(message)
+        except:
+            break
     
 
 def server_program():
