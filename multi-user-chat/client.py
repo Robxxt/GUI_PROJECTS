@@ -42,10 +42,17 @@ def client_program():
         
         text_widget = ScrolledText(window, state='disabled')
         text_widget.pack(padx=10, pady=10)
+        
+        frame_widget = Frame(window)
+        frame_widget.pack(padx=5, pady=5, fill=BOTH, expand=1)
 
-        entry_widget = Entry(window)
+        entry_widget = Entry(frame_widget)
         entry_widget.bind("<Return>", lambda _: send_message(client_socket, username, text_widget, entry_widget))
-        entry_widget.pack(pady=5, padx=5, fill=BOTH)
+        entry_widget.pack(fill=BOTH, expand=1, side=LEFT)
+
+        button_widget = Button(frame_widget, text="Send", command=lambda : send_message(client_socket, username, text_widget, entry_widget))
+        button_widget.pack(side=RIGHT)
+
         thread = threading.Thread(target=receive_message, args=(client_socket, text_widget))
         thread.daemon = True
         thread.start()
